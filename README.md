@@ -1,79 +1,78 @@
-![pHAT BEAT](phat-beat-logo.png)
-https://shop.pimoroni.com/products/phat-beat
+# PiRDO
 
-Stereo amplifier, buttons and dual RGB VU meter for your Pi.
+PiRDO is a Raspberry Pi based client device for the taRDO delayed radio server.
 
 ## Installing
 
-### Full install (recommended):
+Set up a Raspberry Pi Zero W attached to a Pimoroni Phat-Beat, with a fresh install of Raspbian Lite on the micro SD card. Get it connected to the WiFi network and make sure it is accessible via SSH.
 
-We've created an easy installation script that will install all pre-requisites and get your pHAT BEAT
-up and running with minimal efforts. To run it, fire up Terminal which you'll find in Menu -> Accessories -> Terminal
-on your Raspberry Pi desktop, as illustrated below:
+Edit `/boot/config.txt` with tho following changes:
 
-![Finding the terminal](http://get.pimoroni.com/resources/github-repo-terminal.png)
+* uncomment `dtparam=i2s=on` to turn on i2s
+* comment out `dtparam=audio=on` to turn off the built-in audio
+* add `dtoverlay=i2s-mmap` and `dtoverlay=hifiberry-dac` to the end to enable the Phat-Beat's audio.
 
-In the new terminal window type the command exactly as it appears below (check for typos) and follow the on-screen instructions:
-
-```bash
-curl https://get.pimoroni.com/phatbeat | bash
-```
-
-Alternatively, on Raspbian, you can download the `pimoroni-dashboard` and install your product by browsing to the relevant entry:
+It should end up looking like this:
 
 ```bash
-sudo apt-get install pimoroni
+# /boot/config.txt
+
+...
+
+#dtparam=i2c_arm=on
+dtparam=i2s=on
+#dtparam=spi=on
+
+...
+
+# dtparam=audio=on
+
+...
+
+# For phat-beat
+dtoverlay=i2s-mmap
+dtoverlay=hifiberry-dac
 ```
-(you will find the Dashboard under 'Accessories' too, in the Pi menu - or just run `pimoroni-dashboard` at the command line)
 
-If you choose to download examples you'll find them in `/home/pi/Pimoroni/phatbeat/`.
-
-### Manual install:
-
-#### Library install for Python 3:
-
-on Raspbian:
+Now get the Pimoroni optimisations and dependencies for the Phat-Beat without the vu-meter stuff:
 
 ```bash
-sudo apt-get install python3-phatbeat
+curl -sS http://get.pimoroni.com/pulseaudio | bash
 ```
 
-other environments: 
+Create a file `/etc/asound.conf` with the following:
+
+```
+pcm.!default {
+ type hw
+ card 1
+}
+ctl.!default {
+ type hw
+ card 1
+}
+```
+
+Reboot the Pi. Connect a speaker to the Phat-Beat and test it with:
 
 ```bash
-sudo pip3 install phatbeat
+speaker-test -c2 -t wav
 ```
 
-#### Library install for Python 2:
-
-on Raspbian:
+If you hear sounds then all is well. Install VLC without x11:
 
 ```bash
-sudo apt-get install python-phatbeat
+sudo apt install vlc-nox
 ```
 
-other environments: 
+This installs a metric tonne of other packages (including, confusingly, some x11 ones), but that's still only about half the dependencies of the full `vlc` package!
+
+Test that VLC works:
 
 ```bash
-sudo pip2 install phatbeat
+vlc http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p
 ```
 
-### Development:
+With any luck you should hear Radio 4 coming from the speaker! Type CTRL-C to exit.
 
-If you want to contribute, or like living on the edge of your seat by having the latest code, you should clone this repository, `cd` to the library directory, and run:
 
-```bash
-sudo python3 setup.py install
-```
-(or `sudo python setup.py install` whichever your primary Python environment may be)
-
-## Documentation & Support
-
-* Guides and tutorials - https://learn.pimoroni.com/phat-beat
-* Function reference - http://docs.pimoroni.com/phatbeat/
-* GPIO Pinout - https://pinout.xyz/pinout/phat_beat
-* Get help - http://forums.pimoroni.com/c/support
-
-## Third Party Libraries
-
-* Node JS - https://github.com/eminentspoon/phatbeat-node
