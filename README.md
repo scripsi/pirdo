@@ -2,7 +2,7 @@
 
 PiRDO is a Raspberry Pi based client device for the taRDO delayed radio server.
 
-## Installing
+## Installing prerequisites
 
 Set up a Raspberry Pi Zero W attached to a Pimoroni Phat-Beat, with a fresh install of Raspbian Lite on the micro SD card. Get it connected to the WiFi network and make sure it is accessible via SSH.
 
@@ -75,4 +75,24 @@ vlc http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p
 
 With any luck you should hear Radio 4 coming from the speaker! Type CTRL-C to exit.
 
+Install Python 3 PIP and git:
+
+```bash
+sudo apt install python3-pip git
+```
+
+Then install the Python VLC library:
+
+```bash
+sudo pip3 install python-vlc
+```
+That's all the prerequisites set up!
+
+## Installing and configuring PiRDO
+
+Clone the PiRDO repository from GitHub:
+
+```bash
+git clone https://github.com/scripsi/pirdo
+```
 
