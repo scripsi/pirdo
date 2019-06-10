@@ -82,7 +82,7 @@ sw1_c.when_activated = sw1_changed
 sw1_c.when_deactivated = sw1_changed
 
 # *** Init ***
-curent_station=read_sw1
+current_station=read_sw1
 if current_station:
     player.set_media(stations[current_station])
     player.audio_set_volume(volume)
