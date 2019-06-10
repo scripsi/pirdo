@@ -25,17 +25,7 @@ sw1_a = gpiozero.DigitalInputDevice(10,pull_up=True)
 sw1_b = gpiozero.DigitalInputDevice(9,pull_up=True)
 sw1_c = gpiozero.DigitalInputDevice(11,pull_up=True)
 
-# Register event handlers
-enc_a.when_pressed = enc_a_rising      # Register the event handler for pin A
-enc_b.when_pressed = enc_b_rising      # Register the event handler for pin B
-enc_c.when_released = enc_c_released      # Register the event handler for pin C
 
-sw1_a.when_activated = sw1_changed
-sw1_a.when_deactivated = sw1_changed
-sw1_b.when_activated = sw1_changed
-sw1_b.when_deactivated = sw1_changed
-sw1_c.when_activated = sw1_changed
-sw1_c.when_deactivated = sw1_changed
 
 # *** Definitions ***
 
@@ -79,7 +69,17 @@ def read_sw1():
                 sw1_state=0
     return sw1_state
 
+# Register event handlers
+enc_a.when_pressed = enc_a_rising      # Register the event handler for pin A
+enc_b.when_pressed = enc_b_rising      # Register the event handler for pin B
+enc_c.when_released = enc_c_released      # Register the event handler for pin C
 
+sw1_a.when_activated = sw1_changed
+sw1_a.when_deactivated = sw1_changed
+sw1_b.when_activated = sw1_changed
+sw1_b.when_deactivated = sw1_changed
+sw1_c.when_activated = sw1_changed
+sw1_c.when_deactivated = sw1_changed
 
 # *** Init ***
 curent_station=read_sw1
