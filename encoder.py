@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 from gpiozero import Button
-import Queue
+import queue
 
-eventq = Queue.Queue(maxsize=10)
+eventq = queue.Queue(maxsize=10)
 
 enc_a = Button(5,pull_up=True)         # Rotary encoder pin A connected to GPIO5
 enc_b = Button(6,pull_up=True)         # Rotary encoder pin B connected to GPIO6

@@ -86,6 +86,7 @@ Then install the Python VLC library:
 ```bash
 sudo pip3 install python-vlc
 ```
+
 That's all the prerequisites set up!
 
 ## Installing and configuring PiRDO
@@ -96,3 +97,30 @@ Clone the PiRDO repository from GitHub:
 git clone https://github.com/scripsi/pirdo
 ```
 
+```
+                 ___
+ Disp&PB 3.3V  1|o o|2  PB 5V
+     Disp_SDA  3|o o|4  
+     Disp_SCL  5|o o|6  Disp_GND
+GPIO 04 Enc_C  7|o o|8  Enc_A GPIO 14
+      Enc_GND  9|o o|10 Enc_B GPIO 15
+              11|o o|12 PB I2S
+              13|o o|14 
+              15|o o|16 PB Data
+              17|o o|18 PB Clock
+GPIO 10 Sw1_A 19|o o|20 Sw2_GND
+GPIO 09 Sw1_B 21|o o|22 Sw2_C GPIO 25
+GPIO 11 Sw1_C 23|o o|24 Sw2_B GPIO 08
+      Sw1_GND 25|o o|26 Sw2_A GPIO 07
+              27|o o|28
+     PB F/Fwd 29|o o|30 GND
+PB Play/Pause 31|o o|32 PB On/Off
+    PB Rewind 33|o o|34 GND
+       PB I2S 35|o o|36 PB Vol+
+      PB Vol- 37|o o|38
+       PB GND 39|o_o|40 PB I2S
+
+PB = Phat Beat
+Enc = Encoder
+Sw1, Sw2 = Selector switches
+Disp = I2C display (optional)
