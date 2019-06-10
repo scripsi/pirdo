@@ -1,4 +1,3 @@
-#!/usr/bin/python
 
 import gpiozero
 import queue
@@ -14,19 +13,18 @@ sw1_b = gpiozero.DigitalInputDevice(9,pull_up=True)
 sw1_c = gpiozero.DigitalInputDevice(11,pull_up=True)
 
 def enc_a_rising():                    # Pin A event handler
-    if enc_b.is_pressed: eventq.put(-1)   # pin A rising while B is active is a clockwise turn
+    if enc_b.is_pressed: eventq.put('VOLDN')   # pin A rising while B is active is a clockwise turn
 
 def enc_b_rising():                    # Pin B event handler
-    if enc_a.is_pressed: eventq.put(1)    # pin B rising while A is active is a clockwise turn
+    if enc_a.is_pressed: eventq.put('VOLUP')    # pin B rising while A is active is a clockwise turn
 
 def enc_c_released():                    # Pin C event handler
     eventq.put(2)
 
 def sw1_changed():
-    sw1_state = sw1_a.value + (sw1_b.value * 2) + (sw1_c.value * 4)
-    eventq.put(sw1_state)
+    eventq.put('SW1')
 
-
+# Register event handlers
 enc_a.when_pressed = enc_a_rising      # Register the event handler for pin A
 enc_b.when_pressed = enc_b_rising      # Register the event handler for pin B
 enc_c.when_released = enc_c_released      # Register the event handler for pin C
