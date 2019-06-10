@@ -100,13 +100,13 @@ git clone https://github.com/scripsi/pirdo
 ```
                  ___
  Disp&PB 3.3V  1|o o|2  PB 5V
-     Disp_SDA  3|o o|4  
+     Disp_SDA  3|o o|4
      Disp_SCL  5|o o|6  Disp_GND
-GPIO 04 Enc_C  7|o o|8  Enc_A GPIO 14
-      Enc_GND  9|o o|10 Enc_B GPIO 15
-              11|o o|12 PB I2S
-              13|o o|14 
-              15|o o|16 PB Data
+               7|o o|8
+      Enc_GND  9|o o|10
+GPIO 17 Enc_A 11|o o|12 PB I2S
+GPIO 27 Enc_B 13|o o|14
+GPIO 22 Enc_C 15|o o|16 PB Data
               17|o o|18 PB Clock
 GPIO 10 Sw1_A 19|o o|20 Sw2_GND
 GPIO 09 Sw1_B 21|o o|22 Sw2_C GPIO 25

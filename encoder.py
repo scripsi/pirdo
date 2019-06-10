@@ -5,9 +5,9 @@ import queue
 
 eventq = queue.Queue(maxsize=10)
 
-enc_a = Button(5,pull_up=True)         # Rotary encoder pin A connected to GPIO5
-enc_b = Button(6,pull_up=True)         # Rotary encoder pin B connected to GPIO6
-enc_c = Button(26,pull_up=True)        # Rotary encoder push button connected to GPIO26
+enc_a = Button(17,pull_up=True)         # Rotary encoder pin A connected to GPIO17
+enc_b = Button(27,pull_up=True)         # Rotary encoder pin B connected to GPIO27
+enc_c = Button(22,pull_up=True)         # Rotary encoder push button connected to GPIO22
 
 def enc_a_rising():                    # Pin A event handler
     if enc_b.is_pressed: eventq.put(-1)   # pin A rising while B is active is a clockwise turn
