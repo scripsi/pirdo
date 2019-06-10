@@ -23,7 +23,8 @@ def enc_c_released():                    # Pin C event handler
     eventq.put(2)
 
 def sw1_changed():
-    eventq.put(3)
+    sw1_state = sw1_a.value + (sw1_b.value * 2) + (sw1_c.value * 4)
+    eventq.put(sw1_state)
 
 
 enc_a.when_pressed = enc_a_rising      # Register the event handler for pin A
