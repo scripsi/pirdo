@@ -39,6 +39,7 @@ def enc_b_rising():                    # Pin B event handler
 
 def enc_c_released():                    # Pin C event handler
     eventq.put('VOLPRESS')
+    print('VOLPRESS')
 
 def sw1_changed():
     eventq.put('SW1')
@@ -118,5 +119,7 @@ while True:
             if new_station:
                 if new_station != current_station:
                     current_station = new_station
+                    player.stop()
                     player.set_media(stations[current_station-1])
+                    player.play()
                     print('Station changed to', current_station)
