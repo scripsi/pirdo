@@ -17,9 +17,9 @@ stations = [vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_
             vlc.Media("http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk")]
 
 # Setup controls
-enc_a = gpiozero.Button(17,pull_up=True)         # Rotary encoder pin A connected to GPIO17
-enc_b = gpiozero.Button(27,pull_up=True)         # Rotary encoder pin B connected to GPIO27
-enc_c = gpiozero.Button(22,pull_up=True)         # Rotary encoder push button connected to GPIO22
+enc_a = gpiozero.Button(17)         # Rotary encoder pin A connected to GPIO17
+enc_b = gpiozero.Button(27)         # Rotary encoder pin B connected to GPIO27
+enc_c = gpiozero.Button(22)         # Rotary encoder push button connected to GPIO22
 
 sw1_a = gpiozero.DigitalInputDevice(10,pull_up=True)
 sw1_b = gpiozero.DigitalInputDevice(9,pull_up=True)
