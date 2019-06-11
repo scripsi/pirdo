@@ -84,10 +84,39 @@ sw1_c.when_deactivated = sw1_changed
 # *** Init ***
 current_station=read_sw1()
 if current_station:
-    player.set_media(stations[current_station])
+    player.set_media(stations[current_station-1])
     player.audio_set_volume(volume)
     player.play()
-    time.sleep(60)
-    player.stop()
-else:
-    print("Error: station not set")
+    playing = True
+    
+while True:
+    if eventq.not_empty:
+        event = eventq.get()
+        if event == 'VOLDN':
+            volume -= 1
+            if volume < 0:
+                volume = 0
+            player.audio_set_volume(volume)
+            print('Volume down to', volume)
+        elif event == 'VOLUP':
+            volume += 1
+            if volume > 100:
+                volume = 100
+            player.audio_set_volume(volume)
+            print('Volume up to', volume)
+        elif event == 'VOLPRESS':
+            if playing:
+                player.stop()
+                playing = False
+                print('Stopped')
+            else:
+                player.play()
+                playing = True
+                print('Playing')
+        elif event == 'SW1':
+            new_station = read_sw1()
+            if new_station:
+                if new_station != current_station:
+                    current_station = new_station
+                    player.set_media(stations[current_station-1])
+                    print('Station changed to', current_station)
