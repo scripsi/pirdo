@@ -15,7 +15,7 @@ eventq = queue.Queue(maxsize=10)
 vconfig = configparser.ConfigParser()
 vconfig.read('/home/pi/pirdo/volume.ini')
 if vconfig['DEFAULT']['volume']:
-    volume = vconfig['DEFAULT']['volume']
+    volume = int(vconfig['DEFAULT']['volume'])
 
 stations = [vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p"),
             vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p"),
@@ -114,6 +114,9 @@ while True:
             if playing:
                 player.stop()
                 playing = False
+                vconfig['DEFAULT']['volume'] = volume
+                with open('/home/pi/pirdo/volume.ini', 'w') as configfile:
+                    vconfig.write(configfile)
             else:
                 player.play()
                 playing = True
