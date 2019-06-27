@@ -20,8 +20,8 @@ if vconfig['DEFAULT']['volume']:
 stations = [vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p"),
             vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p"),
             vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p"),
-            vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4extra_mf_p"),
-            vlc.Media("http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk")]
+            vlc.Media("http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"),
+            vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_scotlandfm_mf_p")]
 
 # Setup controls
 enc_a = gpiozero.Button(17)         # Rotary encoder pin A connected to GPIO17
@@ -114,7 +114,7 @@ while True:
             if playing:
                 player.stop()
                 playing = False
-                vconfig['DEFAULT']['volume'] = volume
+                vconfig['DEFAULT']['volume'] = str(volume)
                 with open('/home/pi/pirdo/volume.ini', 'w') as configfile:
                     vconfig.write(configfile)
             else:
