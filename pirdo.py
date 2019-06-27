@@ -4,11 +4,18 @@ import vlc
 import time
 import gpiozero
 import queue
+import configparser
 
 # *** Globals ***
 volume=50
 player=vlc.MediaPlayer("")
 eventq = queue.Queue(maxsize=10)
+
+# read config if available
+vconfig = configparser.ConfigParser()
+vconfig.read('/home/pi/pirdo/volume.ini')
+if vconfig['DEFAULT']['volume']:
+    volume = vconfig['DEFAULT']['volume']
 
 stations = [vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p"),
             vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p"),
@@ -27,6 +34,7 @@ sw1_c = gpiozero.DigitalInputDevice(11,pull_up=True)
 
 
 
+
 # *** Definitions ***
 
 # Event handler definitions
@@ -39,7 +47,6 @@ def enc_b_rising():                    # Pin B event handler
 
 def enc_c_released():                    # Pin C event handler
     eventq.put('VOLPRESS')
-    print('VOLPRESS')
 
 def sw1_changed():
     eventq.put('SW1')
@@ -98,22 +105,18 @@ while True:
             if volume < 0:
                 volume = 0
             player.audio_set_volume(volume)
-            print('Volume down to', volume)
         elif event == 'VOLUP':
             volume += 1
             if volume > 100:
                 volume = 100
             player.audio_set_volume(volume)
-            print('Volume up to', volume)
         elif event == 'VOLPRESS':
             if playing:
                 player.stop()
                 playing = False
-                print('Stopped')
             else:
                 player.play()
                 playing = True
-                print('Playing')
         elif event == 'SW1':
             new_station = read_sw1()
             if new_station:
@@ -122,4 +125,3 @@ while True:
                     player.stop()
                     player.set_media(stations[current_station-1])
                     player.play()
-                    print('Station changed to', current_station)

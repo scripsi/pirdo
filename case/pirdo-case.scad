@@ -120,15 +120,17 @@ vol_fence_thickness = 2;
 vol_fence_w = 12.4 + vol_fence_thickness;
 vol_fence_h=2;
 vol_d = 12;
-
 vol_tab_r = 1.5;
 vol_tab_h = 1;
 vol_tab_offset_d=6;
 
 * front_face();
 * side_walls();
-rear_face();
+* rear_face();
 * buttons();
+
+vol_knob();
+* sel_knob();
 
 module front_face() {
   // Construct the front face
@@ -436,6 +438,71 @@ module button(radius,length,height,swidth,slength,sheight) {
   }  
   translate([0,0,-sheight/2])
       cube([swidth,slength,sheight], center=true);
+}
+
+module vol_knob() {
+  // construct a knob for the volume encoder
+  
+  volk_h = 18;
+  volk_r = volk_h / 2;
+  volk_w = (case_outside_r * 2) - (volk_r * 2);
+  volk_offset_x = volk_w / 2;
+  volk_offset_z = volk_r;
+  volk_wall_thickness = 1.6;
+  volk_shaft_h = 10;
+  
+  
+  difference() {
+    rotate_extrude($fn=100) {
+      union() {
+        // stadium(radius=7, length=26, height=0.1, quality = 50);
+        square([volk_offset_x,volk_h]);
+        translate([volk_offset_x,volk_offset_z,0])
+          circle(volk_r, $fn=50);
+      }
+    }
+    
+    translate([0,0,volk_wall_thickness])
+      rotate_extrude($fn=100) {
+        union() {
+          square([volk_offset_x, volk_h - (volk_wall_thickness * 2)]);
+          translate([volk_offset_x,volk_offset_z-volk_wall_thickness,0])
+            circle(volk_r - volk_wall_thickness, $fn=50);
+        }
+    }
+    
+    cylinder(h = (volk_wall_thickness * 2) + a_bit_more, r = volk_offset_x, center = true, $fn = 100);
+  }
+  
+  difference() {
+    translate([0,0,volk_h-volk_wall_thickness-volk_shaft_h])
+      cylinder(h = volk_shaft_h + a_bit, r = 5, $fn=50);
+  
+    translate([0,0,volk_h-volk_wall_thickness-volk_shaft_h-a_bit])
+      cylinder(h = volk_shaft_h + a_bit, r = 3, $fn=50);
+    // the slot, and move it to the correct place
+    // 
+  }
+  translate([0, -2/2-3/1.7, volk_h-volk_wall_thickness-(volk_shaft_h/2)])
+    cube([6,2,volk_shaft_h],center=true);
+}
+
+module sel_knob() {
+  // construct a knob for the selector switch
+  difference(){
+    rotate([0,90,0])
+      translate([0,0,-2])
+        stadium(radius=4, length=5, height=4, quality = 50);
+    union(){
+      translate([0,0,0])
+        cube([1.1,4.2,9],center=true);
+      translate([0,0,-4.5])
+        cube([1.1,5.2,9],center=true);
+    }
+    
+    translate([0,0,-7.4])
+      cube([10,10,4],center=true);
+  }
 }
   
 

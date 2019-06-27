@@ -1,6 +1,14 @@
 # PiRDO
 
-PiRDO is a Raspberry Pi based client device for the taRDO delayed radio server.
+PiRDO is a Raspberry Pi based client device for the TaRDO delayed radio server. The aim is to create a small, night time bedside radio that is easy to operate by feel alone - no displays, menus or blinky lights - just hardware selector switches, for choosing the station and time delay, and a rotary volume control.
+
+## Hardware
+
+* Raspberry Pi Zero W
+* Pimoroni pHAT BEAT DAC/amplifier
+* KY-040 type rotary encoder
+* 2 x 5-way Fender-style guitar pickup switches
+* 4 Ohm, 3W rectangular speaker
 
 ## Installing prerequisites
 
@@ -97,17 +105,38 @@ Clone the PiRDO repository from GitHub:
 git clone https://github.com/scripsi/pirdo
 ```
 
+```bash
+sudo nano /lib/systemd/system/pirdo.service
+```
+
+```
+[Unit]
+Description=PiRDO radio
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/pirdo/pirdo.py
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable pirdo.service
+```
+
 ```
                  ___
- Disp&PB 3.3V  1|o o|2  PB 5V
-     Disp_SDA  3|o o|4
-     Disp_SCL  5|o o|6  Disp_GND
+      PB 3.3V  1|o o|2  PB 5V
+               3|o o|4
+               5|o o|6  
                7|o o|8
       Enc_GND  9|o o|10
 GPIO 17 Enc_A 11|o o|12 PB I2S
 GPIO 27 Enc_B 13|o o|14
 GPIO 22 Enc_C 15|o o|16 PB Data
-              17|o o|18 PB Clock
+     Enc_3.3V 17|o o|18 PB Clock
 GPIO 10 Sw1_A 19|o o|20 Sw2_GND
 GPIO 09 Sw1_B 21|o o|22 Sw2_C GPIO 25
 GPIO 11 Sw1_C 23|o o|24 Sw2_B GPIO 08
@@ -123,4 +152,3 @@ PB Play/Pause 31|o o|32 PB On/Off
 PB = Phat Beat
 Enc = Encoder
 Sw1, Sw2 = Selector switches
-Disp = I2C display (optional)
