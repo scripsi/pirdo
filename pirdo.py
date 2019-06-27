@@ -98,6 +98,10 @@ if current_station:
     playing = True
     
 while True:
+    if playing:
+        if not player.is_playing():
+            player.play()
+            time.sleep(5)
     if eventq.not_empty:
         event = eventq.get()
         if event == 'VOLDN':
