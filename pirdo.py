@@ -11,17 +11,21 @@ volume=50
 player=vlc.MediaPlayer("")
 eventq = queue.Queue(maxsize=10)
 
-# read config if available
+# read volume config if available
 vconfig = configparser.ConfigParser()
 vconfig.read('/home/pi/pirdo/volume.ini')
 if vconfig['DEFAULT']['volume']:
     volume = int(vconfig['DEFAULT']['volume'])
 
-stations = [vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p"),
-            vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p"),
-            vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p"),
-            vlc.Media("http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"),
-            vlc.Media("http://bbcmedia.ic.llnwd.net/stream/bbcmedia_scotlandfm_mf_p")]
+# read vstations config if available
+sconfig = configparser.ConfigParser()
+sconfig.read('/home/pi/pirdo/stations.ini')
+
+stations = [vlc.Media(sconfig['SW2A']['A']),
+            vlc.Media(sconfig['SW2A']['B']),
+            vlc.Media(sconfig['SW2A']['C']),
+            vlc.Media(sconfig['SW2A']['D']),
+            vlc.Media(sconfig['SW2A']['E'])]
 
 # Setup controls
 enc_a = gpiozero.Button(17)         # Rotary encoder pin A connected to GPIO17
@@ -32,8 +36,9 @@ sw1_a = gpiozero.DigitalInputDevice(10,pull_up=True)
 sw1_b = gpiozero.DigitalInputDevice(9,pull_up=True)
 sw1_c = gpiozero.DigitalInputDevice(11,pull_up=True)
 
-
-
+sw2_a = gpiozero.DigitalInputDevice(7,pull_up=True)
+sw2_b = gpiozero.DigitalInputDevice(8,pull_up=True)
+sw2_c = gpiozero.DigitalInputDevice(25,pull_up=True)
 
 # *** Definitions ***
 
@@ -50,6 +55,9 @@ def enc_c_released():                    # Pin C event handler
 
 def sw1_changed():
     eventq.put('SW1')
+
+def sw2_changed():
+    eventq.put('SW2')
 
 def read_sw1():
     sw1_state=0
@@ -77,6 +85,33 @@ def read_sw1():
                 sw1_state=0
     return sw1_state
 
+def read_sw2():
+    sw2_state=0
+    if sw2_a.value:
+        if sw2_b.value:
+            if sw2_c.value:
+                sw2_state=0
+            else:
+                sw2_state=4
+        else:
+            if sw2_c.value:
+                sw2_state=0
+            else:
+                sw2_state=5
+    else:
+        if sw2_b.value:
+            if sw2_c.value:
+                sw2_state=2
+            else:
+                sw2_state=3
+        else:
+            if sw2_c.value:
+                sw2_state=1
+            else:
+                sw2_state=0
+    return sw2_state
+
+
 # Register event handlers
 enc_a.when_pressed = enc_a_rising      # Register the event handler for pin A
 enc_b.when_pressed = enc_b_rising      # Register the event handler for pin B
@@ -88,6 +123,13 @@ sw1_b.when_activated = sw1_changed
 sw1_b.when_deactivated = sw1_changed
 sw1_c.when_activated = sw1_changed
 sw1_c.when_deactivated = sw1_changed
+
+sw2_a.when_activated = sw2_changed
+sw2_a.when_deactivated = sw2_changed
+sw2_b.when_activated = sw2_changed
+sw2_b.when_deactivated = sw2_changed
+sw2_c.when_activated = sw2_changed
+sw2_c.when_deactivated = sw2_changed
 
 # *** Init ***
 current_station=read_sw1()

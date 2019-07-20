@@ -1,9 +1,9 @@
 # List of stations for PiRDO
 [DEFAULT]
 A=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p
-B=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p
-C=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p
-D=http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk
+B=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p
+C=http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk
+D=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4lw_mf_p
 E=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_scotlandfm_mf_p
 
 [SW2A]
@@ -14,29 +14,29 @@ E=http://bbcmedia.ic.llnwd.net/stream/bbcmedia_scotlandfm_mf_p
 #E=
 
 [SW2B]
-#A=
-#B=
+A=http://player.radioforexpats.co.uk/radio4fm/5
+B=http://player.radioforexpats.co.uk/radio3/5
 #C=
 #D=
 #E=
 
 [SW2C]
-#A=
-#B=
+A=http://player.radioforexpats.co.uk/radio4fm/6
+B=http://player.radioforexpats.co.uk/radio3/6
 #C=
 #D=
 #E=
 
 [SW2D]
-#A=
-#B=
+A=http://player.radioforexpats.co.uk/radio4fm/7
+B=http://player.radioforexpats.co.uk/radio3/5
 #C=
 #D=
 #E=
 
 [SW2E]
-#A=
-#B=
+A=http://player.radioforexpats.co.uk/radio4fm/8
+B=http://player.radioforexpats.co.uk/radio3/5
 #C=
 #D=
 #E=
