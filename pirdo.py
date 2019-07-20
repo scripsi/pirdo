@@ -25,7 +25,27 @@ stations = [vlc.Media(sconfig['SW2A']['A']),
             vlc.Media(sconfig['SW2A']['B']),
             vlc.Media(sconfig['SW2A']['C']),
             vlc.Media(sconfig['SW2A']['D']),
-            vlc.Media(sconfig['SW2A']['E'])]
+            vlc.Media(sconfig['SW2A']['E']),
+            vlc.Media(sconfig['SW2B']['A']),
+            vlc.Media(sconfig['SW2B']['B']),
+            vlc.Media(sconfig['SW2B']['C']),
+            vlc.Media(sconfig['SW2B']['D']),
+            vlc.Media(sconfig['SW2B']['E']),
+            vlc.Media(sconfig['SW2C']['A']),
+            vlc.Media(sconfig['SW2C']['B']),
+            vlc.Media(sconfig['SW2C']['C']),
+            vlc.Media(sconfig['SW2C']['D']),
+            vlc.Media(sconfig['SW2C']['E']),
+            vlc.Media(sconfig['SW2D']['A']),
+            vlc.Media(sconfig['SW2D']['B']),
+            vlc.Media(sconfig['SW2D']['C']),
+            vlc.Media(sconfig['SW2D']['D']),
+            vlc.Media(sconfig['SW2D']['E']),
+            vlc.Media(sconfig['SW2E']['A']),
+            vlc.Media(sconfig['SW2E']['B']),
+            vlc.Media(sconfig['SW2E']['C']),
+            vlc.Media(sconfig['SW2E']['D']),
+            vlc.Media(sconfig['SW2E']['E'])]
 
 # Setup controls
 enc_a = gpiozero.Button(17)         # Rotary encoder pin A connected to GPIO17
@@ -111,6 +131,11 @@ def read_sw2():
                 sw2_state=0
     return sw2_state
 
+def get_station_number():
+  sw1_pos = read_sw1()
+  sw2_pos = read_sw2()
+  snum = (sw1_pos - 1) + ((sw2_pos - 1) * 5)
+  return snum
 
 # Register event handlers
 enc_a.when_pressed = enc_a_rising      # Register the event handler for pin A
@@ -132,7 +157,7 @@ sw2_c.when_activated = sw2_changed
 sw2_c.when_deactivated = sw2_changed
 
 # *** Init ***
-current_station=read_sw1()
+current_station=get_station_number()
 if current_station:
     player.set_media(stations[current_station-1])
     player.audio_set_volume(volume)
@@ -167,7 +192,15 @@ while True:
                 player.play()
                 playing = True
         elif event == 'SW1':
-            new_station = read_sw1()
+            new_station = get_station_number()
+            if new_station:
+                if new_station != current_station:
+                    current_station = new_station
+                    player.stop()
+                    player.set_media(stations[current_station-1])
+                    player.play()
+        elif event == 'SW2':
+            new_station = get_station_number()
             if new_station:
                 if new_station != current_station:
                     current_station = new_station
