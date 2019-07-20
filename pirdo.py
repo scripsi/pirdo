@@ -134,8 +134,7 @@ def read_sw2():
 def get_station_number():
   sw1_pos = read_sw1()
   sw2_pos = read_sw2()
-  snum = (sw1_pos - 1) + ((sw2_pos - 1) * 5)
-  print(sw1_pos, sw2_pos, snum)
+  snum = sw1_pos + ((sw2_pos - 1) * 5)
   return snum
 
 # Register event handlers
